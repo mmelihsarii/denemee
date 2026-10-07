@@ -6,7 +6,7 @@ Vercel'e repoyu import et ve Deploy'a bas. Framework: Other; ayarlar `vercel.jso
 
 - `public/index.html`: dört butonlu basit deneme sayfası.
 - `/api/hello`: Node.js endpoint.
-- `/api/hello.php`: PHP endpoint.
+- `/api/php-hello.php`: PHP endpoint.
 
 Yerelde çalıştırmak için: `npx vercel dev` (PHP endpoint için yerel PHP kurulumu gerekir).
 
