@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proje</title>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; font-family: system-ui, sans-serif; background: #f5f5f5; color: #171717; }
+      main { padding: 32px; max-width: 560px; }
+      h1 { font-size: 28px; }
+      .buttons { display: flex; flex-wrap: wrap; gap: 10px; }
+      button { padding: 12px 16px; border: 1px solid #d4d4d4; border-radius: 8px; background: white; color: #171717; font: inherit; cursor: pointer; }
+      button:hover { background: #e5e5e5; }
+      button:disabled { cursor: wait; opacity: .6; }
+      #result { min-height: 48px; margin-top: 24px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Proje hazır.</h1>
+      <p>Bir butona bas, çalıştığını gör.</p>
+      <div class="buttons">
+        <button id="counter" type="button">Sayaç: 0</button>
+        <button id="color" type="button">Renk değiştir</button>
+        <button id="message" type="button">Mesaj göster</button>
+        <button id="api" type="button">API kontrolü</button>
+      </div>
+      <p id="result" role="status" aria-live="polite">Butonlar hazır.</p>
+    </main>
+    <script>
+      const result = document.querySelector('#result');
+      let count = 0;
+      let color = 0;
+      const colors = ['#f5f5f5', '#dbeafe', '#dcfce7', '#fef3c7'];
+      document.querySelector('#counter').addEventListener('click', (event) => {
+        event.currentTarget.textContent = `Sayaç: ${++count}`;
+      });
+      document.querySelector('#color').addEventListener('click', () => {
+        color = (color + 1) % colors.length;
+        document.body.style.background = colors[color];
+      });
+      document.querySelector('#message').addEventListener('click', () => {
+        result.textContent = 'Çalışıyor kral 👑';
+      });
+      document.querySelector('#api').addEventListener('click', async (event) => {
+        const button = event.currentTarget;
+        button.disabled = true;
+        result.textContent = 'API kontrol ediliyor…';
+        try {
+          const response = await fetch('/api/hello');
+          if (!response.ok) throw new Error('API yanıt vermedi.');
+          const data = await response.json();
+          if (!data.ok || data.runtime !== 'nodejs') throw new Error('Beklenmeyen API yanıtı.');
+          result.textContent = 'Node.js API çalışıyor ✓';
+        } catch {
+          result.textContent = 'API bağlantısı kurulamadı. Tekrar dene.';
+        } finally {
+          button.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
